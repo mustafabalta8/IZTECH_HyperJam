@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("trigger worked");
             playerMovement.movement = Vector3.zero;
+            Destroy(other.gameObject);
         }
     }
 }
