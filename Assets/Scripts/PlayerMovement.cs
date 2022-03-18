@@ -20,6 +20,8 @@ public class PlayerMovement : MonoBehaviour
     private float lastFrameFingerPositionX;
     private float moveFactorX;
 
+    public bool canSideMove = true;
+
     public static PlayerMovement instance;
     private void Awake()
     {
@@ -40,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
         if (isPlaying)
         {
             MoveForward();
+            if(canSideMove)
             HandleSideMovement();
         }
 

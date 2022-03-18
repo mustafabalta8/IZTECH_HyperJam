@@ -14,6 +14,7 @@ public class Puzzle : MonoBehaviour
             Debug.Log("baþarýlý");
             Destroy(gameObject.transform.parent.gameObject.transform.parent.gameObject);
             PlayerMovement.instance.movement = new Vector3(0, 0, 1);
+            PlayerMovement.instance.canSideMove = true;
         }
         else
         {

@@ -17,6 +17,11 @@ public class Player : MonoBehaviour
             Debug.Log("trigger worked");
             playerMovement.movement = Vector3.zero;
             Destroy(other.gameObject);
+            PlayerMovement.instance.canSideMove = false;
+        }
+        if (other.CompareTag("Finish"))
+        {
+            Debug.Log("Bitti");
         }
     }
 }
