@@ -6,26 +6,36 @@ public class PlayerMovement : MonoBehaviour
 {
 
     [SerializeField] private bool isPlaying = false;
+
+    [Header("Movement")]
     [SerializeField] private float speed;
-
-    [SerializeField] public Vector3 movement;
-
-    //public Vector3 Movement { set {  } get { return movement; } }
-
-
+    [SerializeField] private Vector3 movement;    
     [SerializeField] private float swerveSpeed;
     [SerializeField] private Transform sideMovementRoot;
     [SerializeField] private float moveLimit;
 
     private float lastFrameFingerPositionX;
     private float moveFactorX;
+    private bool canSideMove = true;
 
-    public bool canSideMove = true;
+    public Vector3 Movement { 
+        get { return movement; } 
+        set { movement = value; } 
+    }
+    public bool CanSideMove
+    {
+        get { return canSideMove; }
+        set { canSideMove = value; }
+    }
 
     public static PlayerMovement instance;
     private void Awake()
     {
-        if(instance == null)
+        Singelton();
+    }
+    private void Singelton()
+    {
+        if (instance == null)
         {
             instance = this;
         }
@@ -36,20 +46,13 @@ public class PlayerMovement : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-        }
         if (isPlaying)
         {
             MoveForward();
             if(canSideMove)
             HandleSideMovement();
         }
-
     }
-
-
-
     private void MoveForward()
     {
         transform.Translate(movement * Time.deltaTime * speed);
@@ -71,7 +74,6 @@ public class PlayerMovement : MonoBehaviour
         {
             moveFactorX = 0f;
         }
-
 
         float swerveAmount = swerveSpeed * moveFactorX;
         var currentPos = this.sideMovementRoot.localPosition;

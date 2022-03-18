@@ -14,10 +14,10 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("WaitLine"))
         {
-            Debug.Log("trigger worked");
-            playerMovement.movement = Vector3.zero;
+            
+            playerMovement.Movement = Vector3.zero;
             Destroy(other.gameObject);
-            PlayerMovement.instance.canSideMove = false;
+            PlayerMovement.instance.CanSideMove = false;
         }
         if (other.CompareTag("Finish"))
         {
