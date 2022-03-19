@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class Puzzle : MonoBehaviour
 {
-    [SerializeField] private string trueAnswer; 
-
+    [SerializeField] private string trueAnswer;
+    [SerializeField] private GameObject particleFX;
     public void GetAnswer(string answer)
     {
-        if (answer == trueAnswer && !Player.characterAnimator.GetBool("isRunning"))
+        if (answer == trueAnswer && PlayerMovement.instance.CanSideMove==false)//!Player.characterAnimator.GetBool("isRunning")
         {
+            particleFX.transform.parent = null;
+            particleFX.SetActive(true);
             //Destroy(gameObject.transform.parent.gameObject.transform.parent.gameObject);
             Destroy(gameObject);
             
             SoundMananger.instance.PlaySuccessSound();
             MovePlayer();
             Score.instance.ChangeScore(40);
+            
         }
-        else
+        else if(!PlayerMovement.instance.CanSideMove)
         {
             SoundMananger.instance.PlayBombSound();
             Destroy(gameObject);

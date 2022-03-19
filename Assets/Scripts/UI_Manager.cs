@@ -10,7 +10,9 @@ public class UI_Manager : MonoBehaviour
 
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject inGamePanel;
-    [SerializeField] private TextMeshProUGUI scoreText; 
+    [SerializeField] private TextMeshProUGUI scoreText;
+
+    int nextLevelIndex;
     private void Start()
     {
         Singelton();
@@ -36,7 +38,8 @@ public class UI_Manager : MonoBehaviour
 
     public void OpenNextLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(nextLevelIndex);      
     }
     IEnumerator OpenWinPanelWithDelay()
     {
