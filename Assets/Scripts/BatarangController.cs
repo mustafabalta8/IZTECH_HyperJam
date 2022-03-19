@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BatarangController : MonoBehaviour
-{
-    
+{  
     public static BatarangController instance;
     GunRotator gunRotator;
     public static bool finish;
@@ -43,18 +42,12 @@ public class BatarangController : MonoBehaviour
         if (finish)
         {
             time -= Time.deltaTime;
-
-            Debug.Log("Bitti");
-            //playerMovement.Movement = Vector3.zero;
-            //PlayerMovement.instance.CanSideMove = false;
-            //Player.characterAnimator.SetBool("isRunning", false);
+;
             Player.characterAnimator.SetBool("Throw", true);
-            Debug.Log("bitti 22");
+            SoundMananger.instance.PlayThrowSound();
             if (time <= 0)
             {
-                Debug.Log("time doldu");
                 gunMesh.enabled = true;
-
 
                 transform.position = Vector3.MoveTowards(transform.position, target.position, speed);
                 gunRotator.isRotating = true;
@@ -62,21 +55,6 @@ public class BatarangController : MonoBehaviour
                 //transform.Rotate(new Vector3(0, 90, 0));
 
                 gameObject.transform.localScale += new Vector3(0.02f, 0.02f, 0.02f);
-                /*
-                delay -= Time.deltaTime;
-
-                if(delay <= 0)
-                {
-                    Debug.Log("transparent objeler");
-                    gameObject.transform.GetChild(0).gameObject.SetActive(true);
-                    delay = 0.35f;
-
-                    if(gameObject.transform.GetChild(0).gameObject.activeSelf == true)
-                        gameObject.transform.GetChild(1).gameObject.SetActive(true);
-
-                    //finish = false;
-                }*/
-
             }
             StartCoroutine(ThrowFinished());
         }
@@ -86,21 +64,28 @@ public class BatarangController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
         Player.characterAnimator.SetBool("Throw", false);
-        //
     }
+
+    /*
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Target")
         {
-            Debug.Log("target destroyed");
+            Debug.Log("GUN destroyed");
             Destroy(gameObject);
         }
-    }
+    }*/
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Target")
-        {           
+        {
+            Player.characterAnimator.SetBool("Dance", true);
+            UI_Manager.instance.OpenWinPanel();
             Destroy(gameObject);
+            Debug.Log("GUN destroyed");
+            
         }
     }
+
+    
 }

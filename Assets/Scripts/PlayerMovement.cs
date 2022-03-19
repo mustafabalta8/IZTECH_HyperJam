@@ -28,6 +28,12 @@ public class PlayerMovement : MonoBehaviour
         set { canSideMove = value; }
     }
 
+    public bool IsPlaying
+    {
+        get { return isPlaying; }
+        set { isPlaying = value; }
+    }
+
     public static PlayerMovement instance;
     private void Awake()
     {

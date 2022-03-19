@@ -9,17 +9,27 @@ public class Puzzle : MonoBehaviour
     public void GetAnswer(string answer)
     {
         if (answer == trueAnswer && !Player.characterAnimator.GetBool("isRunning"))
-        {            
-            Destroy(gameObject.transform.parent.gameObject.transform.parent.gameObject);
-            PlayerMovement.instance.Movement = Vector3.forward;
-            PlayerMovement.instance.CanSideMove = true;
-
-            Player.characterAnimator.SetBool("isRunning", true);
-            //FindObjectOfType<Player>().characterAnimator.SetBool("isRunning", true);
+        {
+            //Destroy(gameObject.transform.parent.gameObject.transform.parent.gameObject);
+            Destroy(gameObject);
+            
+            SoundMananger.instance.PlaySuccessSound();
+            MovePlayer();
+            Score.instance.ChangeScore(40);
         }
         else
         {
-            print("yanlýþ cevap");
+            SoundMananger.instance.PlayBombSound();
+            Destroy(gameObject);
+            MovePlayer();
+            Score.instance.ChangeScore(-20);
         }
+    }
+
+    private void MovePlayer()
+    {
+        PlayerMovement.instance.Movement = Vector3.forward;
+        PlayerMovement.instance.CanSideMove = true;
+        Player.characterAnimator.SetBool("isRunning", true);
     }
 }
