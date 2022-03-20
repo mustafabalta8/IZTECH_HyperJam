@@ -65,8 +65,6 @@ public class PlayerMovement : MonoBehaviour
     }
     private void HandleSideMovement()
     {
-        //float sideMovement = Input.GetAxisRaw("Horizontal");
-        //transform.Translate(new Vector3(0,-sideMovement,0) * speed * Time.deltaTime );
         if (Input.GetMouseButtonDown(0))
         {
             lastFrameFingerPositionX = Input.mousePosition.x;
@@ -82,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         float swerveAmount = swerveSpeed * moveFactorX;
-        var currentPos = this.sideMovementRoot.localPosition;
+        var currentPos = transform.position;
         currentPos.x += swerveAmount;
         currentPos.x = Mathf.Clamp(currentPos.x, -moveLimit, moveLimit);
         this.sideMovementRoot.localPosition = currentPos;

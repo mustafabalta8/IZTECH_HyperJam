@@ -8,11 +8,10 @@ public class Puzzle : MonoBehaviour
     [SerializeField] private GameObject particleFX;
     public void GetAnswer(string answer)
     {
-        if (answer == trueAnswer && PlayerMovement.instance.CanSideMove==false)//!Player.characterAnimator.GetBool("isRunning")
+        if (answer == trueAnswer && PlayerMovement.instance.CanSideMove == false)
         {
             particleFX.transform.parent = null;
             particleFX.SetActive(true);
-            //Destroy(gameObject.transform.parent.gameObject.transform.parent.gameObject);
             Destroy(gameObject);
             
             SoundMananger.instance.PlaySuccessSound();

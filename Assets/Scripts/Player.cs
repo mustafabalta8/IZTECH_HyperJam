@@ -13,8 +13,6 @@ public class Player : MonoBehaviour
     {
         playerMovement = GetComponent<PlayerMovement>();
         characterAnimator = gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<Animator>();
-
-        //characterAnimator.SetBool("isRunning", true);
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -33,29 +31,35 @@ public class Player : MonoBehaviour
             characterAnimator.SetBool("isRunning", false);           
             PlayerMovement.instance.CanSideMove = false;
 
-            //characterAnimator.SetBool("Throw", true);
-
-            //batarangController.gameObject.GetComponent<Rigidbody>().isKinematic = false;
             batarangController.gameObject.GetComponent<BoxCollider>().isTrigger = false;
             batarangController.gameObject.transform.parent = null;
             batarangController.gunMesh.enabled = false;
             batarangController.gameObject.transform.position = new Vector3(gameObject.transform.position.x - 1.5f, gameObject.transform.position.x + 1, gameObject.transform.position.z + 1f);
-            //BatarangController.finish = true;
 
             dart.SetActive(true);
         }
-        /*
-        if (other.gameObject.CompareTag("Bomb"))
+        if (other.CompareTag("Bomb"))
         {
-            characterAnimator.SetBool("isFalling", true);
+            Debug.Log("Bomb");
             playerMovement.Movement = Vector3.zero;
+            characterAnimator.SetBool("isRunning", false);
+            characterAnimator.SetBool("Faled", true);
+            Camera.FindObjectOfType<Animator>().SetBool("Bomb", true);
+            PlayerMovement.instance.CanSideMove = false;
             Destroy(other.gameObject);
 
-        }*/
+            StartCoroutine(ResumeGame(2f));
+        }
     }
-    private void OnTriggerExit(Collider other)
+    
+    IEnumerator ResumeGame(float time)
     {
-       
+        yield return new WaitForSeconds(time);
+
+        playerMovement.Movement = Vector3.forward;
+        characterAnimator.SetBool("Faled", false);
+        characterAnimator.SetBool("isRunning", true);
+        PlayerMovement.instance.CanSideMove = false;
     }
 
 

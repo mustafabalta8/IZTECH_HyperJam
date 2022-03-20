@@ -7,6 +7,7 @@ public class BatarangController : MonoBehaviour
     public static BatarangController instance;
     GunRotator gunRotator;
     public static bool finish;
+    public static bool throwSound;
 
     public Transform target;
     public float delay;
@@ -23,6 +24,7 @@ public class BatarangController : MonoBehaviour
         gunRotator = transform.GetChild(0).GetComponent<GunRotator>();
         Singelton();
         finish = false;
+        throwSound = false;
         time = 0.8f;
     }
     private void Singelton()
@@ -44,15 +46,17 @@ public class BatarangController : MonoBehaviour
             time -= Time.deltaTime;
 ;
             Player.characterAnimator.SetBool("Throw", true);
-            SoundMananger.instance.PlayThrowSound();
             if (time <= 0)
             {
+                if (!throwSound)
+                {
+                    SoundMananger.instance.PlayThrowSound();
+                    throwSound = true;
+                }
                 gunMesh.enabled = true;
 
                 transform.position = Vector3.MoveTowards(transform.position, target.position, speed);
                 gunRotator.isRotating = true;
-                //transform.LookAt(-target.position);
-                //transform.Rotate(new Vector3(0, 90, 0));
 
                 gameObject.transform.localScale += new Vector3(0.02f, 0.02f, 0.02f);
             }
@@ -66,15 +70,6 @@ public class BatarangController : MonoBehaviour
         Player.characterAnimator.SetBool("Throw", false);
     }
 
-    /*
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Target")
-        {
-            Debug.Log("GUN destroyed");
-            Destroy(gameObject);
-        }
-    }*/
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Target")
