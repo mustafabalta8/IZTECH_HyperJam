@@ -12,11 +12,13 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private GameObject inGamePanel;
     [SerializeField] private TextMeshProUGUI scoreText;
 
-    int nextLevelIndex;
+    [SerializeField] private float delayTimeBeforeOpeningWinUI = 2f;
+
+    private int nextLevelIndex;
     private void Start()
     {
         Singelton();
-        scoreText.text = Score.totalScore.ToString();
+        scoreText.text = Score.TotalScore.ToString();
     }
     private void Singelton()
     {
@@ -32,7 +34,7 @@ public class UI_Manager : MonoBehaviour
     public void StartGame()
     {
         PlayerMovement.instance.IsPlaying = true;
-        Player.characterAnimator.SetBool("isRunning", true);
+        Player.CharacterAnimator.SetBool("isRunning", true);
         inGamePanel.SetActive(true);
     }
 
@@ -43,7 +45,7 @@ public class UI_Manager : MonoBehaviour
     }
     IEnumerator OpenWinPanelWithDelay()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(delayTimeBeforeOpeningWinUI);
         winPanel.SetActive(true);
 
     }

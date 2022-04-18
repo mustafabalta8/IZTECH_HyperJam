@@ -2,28 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Score : MonoBehaviour
+public class Score
 {
-    public static int totalScore = 0;
-    public static Score instance;
-    private void Singelton()
+    private static int totalScore = 10;
+
+    public static int TotalScore { get => totalScore; set => totalScore = value; }
+
+    public static void ChangeScore(int score)
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-    private void Start()
-    {
-        Singelton();
-    }
-    public void ChangeScore(int score)
-    {
-        totalScore += score;
-        UI_Manager.instance.UpdateScore(totalScore);
+        TotalScore += score;
+        UI_Manager.instance.UpdateScore(TotalScore);
     }
 }

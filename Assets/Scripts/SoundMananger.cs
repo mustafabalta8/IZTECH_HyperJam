@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class SoundMananger : MonoBehaviour
 {
-    [SerializeField] AudioSource audioSource;
+    [SerializeField] private AudioSource audioSource;
 
-    [SerializeField] AudioClip succesSFX;
-    [SerializeField] AudioClip failSFX;
-    [SerializeField] AudioClip throwingSFX;
-    [SerializeField] AudioClip bombSFX;
-    [SerializeField] AudioClip beepSFX;
-    [SerializeField] AudioClip fitilSFX;
+    [SerializeField] private AudioClip succesSFX;
+    [SerializeField] private AudioClip failSFX;
+    [SerializeField] private AudioClip throwingSFX;
+    [SerializeField] private AudioClip bombSFX;
+    [SerializeField] private AudioClip beepSFX;
+    [SerializeField] private AudioClip fitilSFX;
 
     public static SoundMananger instance;
     private void Awake()

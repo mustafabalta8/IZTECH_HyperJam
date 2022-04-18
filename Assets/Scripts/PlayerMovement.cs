@@ -9,25 +9,25 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] private float speed;
-    [SerializeField] private Vector3 movement;    
+    [SerializeField] private Vector3 movementDirection;    
     [SerializeField] private float swerveSpeed;
     [SerializeField] private Transform sideMovementRoot;
     [SerializeField] private float moveLimit;
+   
 
     private float lastFrameFingerPositionX;
     private float moveFactorX;
     private bool canSideMove = true;
 
     public Vector3 Movement { 
-        get { return movement; } 
-        set { movement = value; } 
+        get { return movementDirection; } 
+        set { movementDirection = value; } 
     }
     public bool CanSideMove
     {
         get { return canSideMove; }
         set { canSideMove = value; }
     }
-
     public bool IsPlaying
     {
         get { return isPlaying; }
@@ -61,9 +61,22 @@ public class PlayerMovement : MonoBehaviour
     }
     private void MoveForward()
     {
-        transform.Translate(movement * Time.deltaTime * speed);
+        transform.Translate(movementDirection * Time.deltaTime * speed);
     }
     private void HandleSideMovement()
+    {
+        GetInput();
+
+        float swerveAmount = swerveSpeed * moveFactorX;
+        var currentPos = transform.position; //this.sideMovementRoot.localPosition;
+        currentPos.x += swerveAmount;
+        currentPos.x = Mathf.Clamp(currentPos.x, -moveLimit, moveLimit);
+
+        transform.position = currentPos;
+        //this.sideMovementRoot.localPosition = currentPos;
+    }
+
+    private void GetInput()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -78,11 +91,5 @@ public class PlayerMovement : MonoBehaviour
         {
             moveFactorX = 0f;
         }
-
-        float swerveAmount = swerveSpeed * moveFactorX;
-        var currentPos = transform.position;
-        currentPos.x += swerveAmount;
-        currentPos.x = Mathf.Clamp(currentPos.x, -moveLimit, moveLimit);
-        this.sideMovementRoot.localPosition = currentPos;
     }
 }

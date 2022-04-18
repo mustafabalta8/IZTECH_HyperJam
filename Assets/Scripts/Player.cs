@@ -4,62 +4,78 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    PlayerMovement playerMovement;
-    public static Animator characterAnimator;
+    private PlayerMovement playerMovement;
+    private static Animator characterAnimator;
 
-    [SerializeField] BatarangController batarangController;
-    [SerializeField] GameObject dart;
+    [SerializeField] private BatarangController batarangController;
+    [SerializeField] private GameObject dart;
+
+    public static Animator CharacterAnimator { get => characterAnimator; set => characterAnimator = value; }
+
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
-        characterAnimator = gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<Animator>();
+        CharacterAnimator = gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.GetComponent<Animator>();
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("WaitLine"))
         {
-            Debug.Log("wait line");
-            characterAnimator.SetBool("isRunning", false);
-            playerMovement.Movement = Vector3.zero;
-            Destroy(other.gameObject);
-            PlayerMovement.instance.CanSideMove = false;
-            SoundMananger.instance.PlayBeepSound();
+            TriggerWaitingInForntOfSceen(other);
         }
         if (other.CompareTag("Finish"))
         {
-            playerMovement.Movement = Vector3.zero;
-            characterAnimator.SetBool("isRunning", false);           
-            PlayerMovement.instance.CanSideMove = false;
-
-            batarangController.gameObject.GetComponent<BoxCollider>().isTrigger = false;
-            batarangController.gameObject.transform.parent = null;
-            batarangController.gunMesh.enabled = false;
-            batarangController.gameObject.transform.position = new Vector3(gameObject.transform.position.x - 1.5f, gameObject.transform.position.x + 1, gameObject.transform.position.z + 1f);
-
-            dart.SetActive(true);
+            StartDartGame();
         }
         if (other.CompareTag("Bomb"))
         {
-            Debug.Log("Bomb");
-            playerMovement.Movement = Vector3.zero;
-            characterAnimator.SetBool("isRunning", false);
-            characterAnimator.SetBool("Faled", true);
-            Camera.FindObjectOfType<Animator>().SetBool("Bomb", true);
-            PlayerMovement.instance.CanSideMove = false;
-            Destroy(other.gameObject);
-
-            StartCoroutine(ResumeGame(2f));
+            CollideWithBomb(other);
         }
     }
-    
+
+    private void StartDartGame()
+    {
+        playerMovement.Movement = Vector3.zero;
+        CharacterAnimator.SetBool("isRunning", false);
+        PlayerMovement.instance.CanSideMove = false;
+
+        batarangController.gameObject.GetComponent<BoxCollider>().isTrigger = false;
+        batarangController.gameObject.transform.parent = null;
+        batarangController.GunMesh.enabled = false;
+        batarangController.gameObject.transform.position = new Vector3(gameObject.transform.position.x - 1.5f, gameObject.transform.position.x + 1, gameObject.transform.position.z + 1f);
+
+        dart.SetActive(true);
+    }
+
+    private void TriggerWaitingInForntOfSceen(Collider other)
+    {
+        CharacterAnimator.SetBool("isRunning", false);
+        playerMovement.Movement = Vector3.zero;
+        Destroy(other.gameObject);
+        PlayerMovement.instance.CanSideMove = false;
+        SoundMananger.instance.PlayBeepSound();
+    }
+
+    private void CollideWithBomb(Collider other)
+    {
+        playerMovement.Movement = Vector3.zero;
+        CharacterAnimator.SetBool("isRunning", false);
+        CharacterAnimator.SetBool("Faled", true);
+        Camera.FindObjectOfType<Animator>().SetBool("Bomb", true);
+        PlayerMovement.instance.CanSideMove = false;
+        Destroy(other.gameObject);
+
+        StartCoroutine(ResumeGame(2f));
+    }
+
     IEnumerator ResumeGame(float time)
     {
         yield return new WaitForSeconds(time);
 
         playerMovement.Movement = Vector3.forward;
-        characterAnimator.SetBool("Faled", false);
-        characterAnimator.SetBool("isRunning", true);
-        PlayerMovement.instance.CanSideMove = false;
+        CharacterAnimator.SetBool("Faled", false);
+        CharacterAnimator.SetBool("isRunning", true);
+        PlayerMovement.instance.CanSideMove = true;
     }
 
 

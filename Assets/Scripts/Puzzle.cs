@@ -10,28 +10,37 @@ public class Puzzle : MonoBehaviour
     {
         if (answer == trueAnswer && PlayerMovement.instance.CanSideMove == false)
         {
-            particleFX.transform.parent = null;
-            particleFX.SetActive(true);
-            Destroy(gameObject);
-            
-            SoundMananger.instance.PlaySuccessSound();
-            MovePlayer();
-            Score.instance.ChangeScore(40);
-            
+            HandleTrueAnswer();
+
         }
         else if(!PlayerMovement.instance.CanSideMove)
         {
-            SoundMananger.instance.PlayBombSound();
-            Destroy(gameObject);
-            MovePlayer();
-            Score.instance.ChangeScore(-20);
+            HandleWrongAnswer();
         }
+    }
+
+    private void HandleWrongAnswer()
+    {
+        SoundMananger.instance.PlayBombSound();
+        Destroy(gameObject);
+        MovePlayer();
+        Score.ChangeScore(-20);
+    }
+
+    private void HandleTrueAnswer()
+    {
+        particleFX.transform.parent = null;
+        particleFX.SetActive(true);
+        Destroy(gameObject);
+        SoundMananger.instance.PlaySuccessSound();
+        MovePlayer();
+        Score.ChangeScore(40);
     }
 
     private void MovePlayer()
     {
         PlayerMovement.instance.Movement = Vector3.forward;
         PlayerMovement.instance.CanSideMove = true;
-        Player.characterAnimator.SetBool("isRunning", true);
+        Player.CharacterAnimator.SetBool("isRunning", true);
     }
 }
